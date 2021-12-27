@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="5"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tvResult"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dp"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:text="@string/str_default_number"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginBottom="2dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            style="@style/Button.Actions"
+            android:text="@string/str_delete" />
+
+        <Button
+            android:id="@+id/btnAnswer"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            style="@style/Button.Actions"
+            android:layout_marginEnd="0dp"
+            android:text="@string/str_answer" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginBottom="2dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnOne"
+            style="@style/Button.Number"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/str_one"
+            tools:ignore="TextContrastCheck" />
+
+        <Button
+            android:id="@+id/btnTwo"
+            style="@style/Button.Number"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/str_two"
+            tools:ignore="TextContrastCheck" />
+
+        <Button
+            android:id="@+id/btnThere"
+            style="@style/Button.Number"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/str_there"
+            tools:ignore="TextContrastCheck" />
+
+        <Button
+            android:id="@+id/btnDivision"
+            style="@style/Button.Operator"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="0dp"
+            android:text="@string/str_division"
+            tools:ignore="TextContrastCheck" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginBottom="2dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnFour"
+            style="@style/Button.Number"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/str_four"
+            tools:ignore="TextContrastCheck" />
+
+        <Button
+            android:id="@+id/btnFive"
+            style="@style/Button.Number"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/str_five"
+            tools:ignore="TextContrastCheck" />
+
+        <Button
+            android:id="@+id/btnSix"
+            style="@style/Button.Number"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/str_six"
+            tools:ignore="TextContrastCheck" />
+
+        <Button
+            android:id="@+id/btnSubtraction"
+            style="@style/Button.Operator"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="0dp"
+            android:text="@string/str_subtraction"
+            tools:ignore="TextContrastCheck" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginBottom="2dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnSeven"
+            style="@style/Button.Number"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/str_seven"
+            tools:ignore="TextContrastCheck" />
+
+        <Button
+            android:id="@+id/btnEight"
+            style="@style/Button.Number"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/str_eight"
+            tools:ignore="TextContrastCheck" />
+
+        <Button
+            android:id="@+id/btnNine"
+            style="@style/Button.Number"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/str_nine"
+            tools:ignore="TextContrastCheck" />
+
+        <Button
+            android:id="@+id/btnMultiplication"
+            style="@style/Button.Operator"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="0dp"
+            android:text="@string/str_multiplication"
+            tools:ignore="TextContrastCheck" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnDot"
+            style="@style/Button.Number"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/str_dot"
+            tools:ignore="TextContrastCheck" />
+
+        <Button
+            android:id="@+id/btnZero"
+            style="@style/Button.Number"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/str_zero"
+            tools:ignore="TextContrastCheck" />
+
+        <Button
+            android:id="@+id/btnModulation"
+            style="@style/Button.Operator"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/str_modulation"
+            tools:ignore="TextContrastCheck" />
+
+        <Button
+            android:id="@+id/btnAddition"
+            style="@style/Button.Operator"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="0dp"
+            android:text="@string/str_addition"
+            tools:ignore="TextContrastCheck" />
+    </LinearLayout>
+
+</LinearLayout>
