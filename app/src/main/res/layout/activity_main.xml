@@ -20,7 +20,7 @@
             android:textSize="24sp"
             android:textStyle="bold"
             android:textColor="@color/black"
-            android:text="@string/str_default_number"/>
+            tools:text="@string/str_default_number"/>
 
     </LinearLayout>
 
