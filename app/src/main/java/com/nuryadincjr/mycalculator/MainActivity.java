@@ -1,23 +1,35 @@
 package com.nuryadincjr.mycalculator;
 
+import static com.nuryadincjr.mycalculator.R.id.btnAddition;
+import static com.nuryadincjr.mycalculator.R.id.btnAnswer;
+import static com.nuryadincjr.mycalculator.R.id.btnDelete;
+import static com.nuryadincjr.mycalculator.R.id.btnDivision;
+import static com.nuryadincjr.mycalculator.R.id.btnDot;
+import static com.nuryadincjr.mycalculator.R.id.btnModulation;
+import static com.nuryadincjr.mycalculator.R.id.btnMultiplication;
+import static com.nuryadincjr.mycalculator.R.id.btnSubtraction;
+import static com.nuryadincjr.mycalculator.R.string.str_dot;
+import static com.nuryadincjr.mycalculator.pojo.Constants.KEY_ACTION_ID;
+import static com.nuryadincjr.mycalculator.pojo.Constants.KEY_DISPLAY_NUMBER;
+import static com.nuryadincjr.mycalculator.pojo.Constants.KEY_INPUT_FIRST;
+import static com.nuryadincjr.mycalculator.pojo.Constants.KEY_INPUT_SECOND;
+import static java.lang.Double.parseDouble;
+import static java.lang.String.valueOf;
+
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.widget.Button;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.nuryadincjr.mycalculator.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
-
     private ActivityMainBinding binding;
     private double inputFirst = 0.0;
     private double inputSecond = 0.0;
-    boolean isAddition;
-    boolean isSubtraction;
-    boolean isMultiplication;
-    boolean isDivision;
-    boolean isModulation;
+    private int actionID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,60 +58,58 @@ public class MainActivity extends AppCompatActivity {
         onActionClickListener(binding.btnAnswer);
         onActionClickListener(binding.btnDelete);
         onActionClickListener(binding.btnDot);
+
+        if(savedInstanceState != null) onStateData(savedInstanceState);
+    }
+
+    private void onStateData(Bundle savedInstanceState) {
+        String displayNumber = savedInstanceState.getString(KEY_DISPLAY_NUMBER);
+        inputFirst = savedInstanceState.getDouble(KEY_INPUT_FIRST);
+        inputSecond = savedInstanceState.getDouble(KEY_INPUT_SECOND);
+        actionID = savedInstanceState.getInt(KEY_ACTION_ID);
+        binding.tvResult.setText(displayNumber);
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putString(KEY_DISPLAY_NUMBER, valueOf(binding.tvResult.getText()));
+        outState.putDouble(KEY_INPUT_FIRST, inputFirst);
+        outState.putDouble(KEY_INPUT_SECOND, inputSecond);
+        outState.putInt(KEY_ACTION_ID, actionID);
+        super.onSaveInstanceState(outState);
     }
 
     private void onNumberClickListener(Button button, int number) {
         button.setOnClickListener(v -> {
-            String displayNumber = binding.tvResult.getText() + String.valueOf(number);
+            String displayNumber = binding.tvResult.getText() + valueOf(number);
             binding.tvResult.setText(displayNumber);
         });
     }
 
-    @SuppressLint("NonConstantResourceId")
     private void onOperatorClickListener(Button button) {
         button.setOnClickListener(v -> {
-            inputFirst = Double.parseDouble(String.valueOf(binding.tvResult.getText()));
-
-            switch (button.getId()) {
-                case R.id.btnAddition:
-                    getIsActionSelected(true, false,
-                            false, false, false);
-                    break;
-                case R.id.btnSubtraction:
-                    getIsActionSelected(false, true,
-                            false, false, false);
-                    break;
-                case R.id.btnMultiplication:
-                    getIsActionSelected(false, false,
-                            true, false, false);
-                    break;
-                case R.id.btnDivision:
-                    getIsActionSelected(false, false,
-                            false, true, false);
-                    break;
-                case R.id.btnModulation:
-                    getIsActionSelected(false, false,
-                            false, false, true);
-                    break;
+            String displayNumber = valueOf(binding.tvResult.getText());
+            if(!displayNumber.isEmpty()){
+                inputFirst = parseDouble(valueOf(binding.tvResult.getText()));
+                binding.tvResult.setText(null);
             }
-
-            binding.tvResult.setText("");
-
+            actionID = button.getId();
         });
     }
 
     @SuppressLint("NonConstantResourceId")
     private void onActionClickListener(Button button) {
         button.setOnClickListener(v -> {
-            if(!binding.tvResult.getText().equals("")){
+            String displayNumber = valueOf(binding.tvResult.getText());
+            if(!displayNumber.isEmpty()){
                 switch (button.getId()) {
-                    case R.id.btnAnswer:
+                    case btnAnswer:
                         getActionAnswer();
                         break;
-                    case R.id.btnDelete:
+                    case btnDelete:
                         getActionDelete();
                         break;
-                    case R.id.btnDot:
+                    case btnDot:
                         getActionDot();
                         break;
                 }
@@ -107,42 +117,46 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void getIsActionSelected(boolean isAddition, boolean isSubtraction,
-                                     boolean isMultiplication, boolean isDivision,
-                                     boolean isModulation) {
-        this.isAddition = isAddition;
-        this.isSubtraction = isSubtraction;
-        this.isMultiplication = isMultiplication;
-        this.isDivision = isDivision;
-        this.isModulation = isModulation;
-    }
-
+    @SuppressLint("NonConstantResourceId")
     private void getActionAnswer() {
-        if(isAddition || isSubtraction || isMultiplication || isDivision || isModulation) {
-            inputSecond = Double.parseDouble(String.valueOf(binding.tvResult.getText()));
+        if(actionID != 0){
+            String displayNumber = valueOf(binding.tvResult.getText());
+            inputSecond = parseDouble(displayNumber);
+
+            switch (actionID) {
+                case btnAddition:
+                    inputFirst += inputSecond;
+                    break;
+                case btnSubtraction:
+                    inputFirst -= inputSecond;
+                    break;
+                case btnMultiplication:
+                    inputFirst *= inputSecond;
+                    break;
+                case btnDivision:
+                    inputFirst /= inputSecond;
+                    break;
+                case btnModulation:
+                    inputFirst %= inputSecond;
+                    break;
+            }
+
+            actionID = 0;
+            binding.tvResult.setText(valueOf(inputFirst));
         }
-
-        if(isAddition) inputFirst += inputSecond;
-        else if(isSubtraction)inputFirst -= inputSecond;
-        else if(isMultiplication)inputFirst *= inputSecond;
-        else if(isDivision) inputFirst /= inputSecond;
-        else if(isModulation) inputFirst %= inputSecond;
-
-        binding.tvResult.setText(String.valueOf(inputFirst));
-        getIsActionSelected(false, false, false, false, false);
     }
 
     private void getActionDelete() {
-        binding.tvResult.setText("");
+        binding.tvResult.setText(null);
         inputFirst = 0.0;
         inputSecond = 0.0;
     }
 
     @SuppressLint("SetTextI18n")
     private void getActionDot() {
-        String displayNumber = String.valueOf(binding.tvResult.getText());
-        if(!displayNumber.contains(getString(R.string.str_dot))){
-            binding.tvResult.setText(displayNumber+getString(R.string.str_dot));
+        String displayNumber = valueOf(binding.tvResult.getText());
+        if(!displayNumber.contains(getString(str_dot))){
+            binding.tvResult.setText(displayNumber+getString(str_dot));
         }
     }
 }

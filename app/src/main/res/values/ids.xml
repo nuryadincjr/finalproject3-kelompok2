@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="btnAnswer" type="id"/>
+    <item name="btnDelete" type="id"/>
+    <item name="btnDot" type="id"/>
+    <item name="btnAddition" type="id"/>
+    <item name="btnSubtraction" type="id"/>
+    <item name="btnMultiplication" type="id"/>
+    <item name="btnDivision" type="id"/>
+    <item name="btnModulation" type="id"/>
+    <item name="tvResult" type="id"/>
+    <item name="btnOne" type="id" />
+    <item name="btnTwo" type="id" />
+    <item name="btnThere" type="id" />
+    <item name="btnFour" type="id" />
+    <item name="btnFive" type="id" />
+    <item name="btnSix" type="id" />
+    <item name="btnSeven" type="id" />
+    <item name="btnEight" type="id" />
+    <item name="btnNine" type="id" />
+    <item name="btnZero" type="id" />
+</resources>
