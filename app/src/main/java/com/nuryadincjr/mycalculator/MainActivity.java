@@ -15,12 +15,16 @@ import static com.nuryadincjr.mycalculator.pojo.Constants.KEY_INPUT_FIRST;
 import static com.nuryadincjr.mycalculator.pojo.Constants.KEY_INPUT_SECOND;
 import static java.lang.Double.parseDouble;
 import static java.lang.String.valueOf;
+import static java.util.Objects.requireNonNull;
 
 import android.annotation.SuppressLint;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.nuryadincjr.mycalculator.databinding.ActivityMainBinding;
@@ -37,6 +41,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        Configuration newConfig = getResources().getConfiguration();
+        getOrientationDevice(newConfig);
+
+        if(savedInstanceState != null) onStateData(savedInstanceState);
 
         onNumberClickListener(binding.btnOne, 1);
         onNumberClickListener(binding.btnTwo, 2);
@@ -58,8 +67,6 @@ public class MainActivity extends AppCompatActivity {
         onActionClickListener(binding.btnAnswer);
         onActionClickListener(binding.btnDelete);
         onActionClickListener(binding.btnDot);
-
-        if(savedInstanceState != null) onStateData(savedInstanceState);
     }
 
     private void onStateData(Bundle savedInstanceState) {
@@ -77,6 +84,25 @@ public class MainActivity extends AppCompatActivity {
         outState.putDouble(KEY_INPUT_SECOND, inputSecond);
         outState.putInt(KEY_ACTION_ID, actionID);
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        getOrientationDevice(newConfig);
+    }
+
+    private void getOrientationDevice(@NonNull Configuration newConfig) {
+        ActionBar actionBar = getSupportActionBar();
+        View decorView = getWindow().getDecorView();
+
+        if(newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
+            requireNonNull(actionBar).hide();
+        } else {
+            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+            requireNonNull(actionBar).show();
+        }
     }
 
     private void onNumberClickListener(Button button, int number) {
