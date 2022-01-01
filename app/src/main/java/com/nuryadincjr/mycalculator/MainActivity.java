@@ -1,5 +1,8 @@
 package com.nuryadincjr.mycalculator;
 
+import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
+import static android.view.View.SYSTEM_UI_FLAG_FULLSCREEN;
+import static android.view.View.SYSTEM_UI_FLAG_VISIBLE;
 import static com.nuryadincjr.mycalculator.R.id.btnAddition;
 import static com.nuryadincjr.mycalculator.R.id.btnAnswer;
 import static com.nuryadincjr.mycalculator.R.id.btnDelete;
@@ -9,32 +12,41 @@ import static com.nuryadincjr.mycalculator.R.id.btnModulation;
 import static com.nuryadincjr.mycalculator.R.id.btnMultiplication;
 import static com.nuryadincjr.mycalculator.R.id.btnSubtraction;
 import static com.nuryadincjr.mycalculator.R.string.str_dot;
-import static com.nuryadincjr.mycalculator.pojo.Constants.KEY_ACTION_ID;
 import static com.nuryadincjr.mycalculator.pojo.Constants.KEY_DISPLAY_NUMBER;
-import static com.nuryadincjr.mycalculator.pojo.Constants.KEY_INPUT_FIRST;
-import static com.nuryadincjr.mycalculator.pojo.Constants.KEY_INPUT_SECOND;
+import static com.nuryadincjr.mycalculator.pojo.Constants.KEY_INPUT_LIST;
+import static com.nuryadincjr.mycalculator.pojo.Constants.REGEX_DECIMAL_PATTERN;
+import static com.nuryadincjr.mycalculator.pojo.Constants.REGEX_OPERATOR_PATTERN;
 import static java.lang.Double.parseDouble;
+import static java.lang.String.join;
 import static java.lang.String.valueOf;
+import static java.text.DecimalFormatSymbols.getInstance;
 import static java.util.Objects.requireNonNull;
 
 import android.annotation.SuppressLint;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.nuryadincjr.mycalculator.databinding.ActivityMainBinding;
 
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
-    private double inputFirst = 0.0;
-    private double inputSecond = 0.0;
-    private int actionID;
+    private List<String> inputList;
+    private DecimalFormat decimalFormat;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +56,11 @@ public class MainActivity extends AppCompatActivity {
 
         Configuration newConfig = getResources().getConfiguration();
         getOrientationDevice(newConfig);
+
+        inputList = new ArrayList<>();
+        decimalFormat = new DecimalFormat("0.0",
+                getInstance(Locale.US));
+        decimalFormat.setMaximumFractionDigits(340);
 
         if(savedInstanceState != null) onStateData(savedInstanceState);
 
@@ -71,18 +88,14 @@ public class MainActivity extends AppCompatActivity {
 
     private void onStateData(Bundle savedInstanceState) {
         String displayNumber = savedInstanceState.getString(KEY_DISPLAY_NUMBER);
-        inputFirst = savedInstanceState.getDouble(KEY_INPUT_FIRST);
-        inputSecond = savedInstanceState.getDouble(KEY_INPUT_SECOND);
-        actionID = savedInstanceState.getInt(KEY_ACTION_ID);
+        inputList = savedInstanceState.getStringArrayList(KEY_INPUT_LIST);
         binding.tvResult.setText(displayNumber);
     }
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putString(KEY_DISPLAY_NUMBER, valueOf(binding.tvResult.getText()));
-        outState.putDouble(KEY_INPUT_FIRST, inputFirst);
-        outState.putDouble(KEY_INPUT_SECOND, inputSecond);
-        outState.putInt(KEY_ACTION_ID, actionID);
+        outState.putStringArrayList(KEY_INPUT_LIST, (ArrayList<String>) inputList);
         super.onSaveInstanceState(outState);
     }
 
@@ -96,11 +109,11 @@ public class MainActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         View decorView = getWindow().getDecorView();
 
-        if(newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
+        if(newConfig.orientation == ORIENTATION_LANDSCAPE) {
+            decorView.setSystemUiVisibility(SYSTEM_UI_FLAG_FULLSCREEN);
             requireNonNull(actionBar).hide();
         } else {
-            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+            decorView.setSystemUiVisibility(SYSTEM_UI_FLAG_VISIBLE);
             requireNonNull(actionBar).show();
         }
     }
@@ -112,28 +125,55 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @SuppressLint("NonConstantResourceId")
     private void onOperatorClickListener(Button button) {
         button.setOnClickListener(v -> {
-            String displayNumber = valueOf(binding.tvResult.getText());
-            if(!displayNumber.isEmpty()){
-                inputFirst = parseDouble(valueOf(binding.tvResult.getText()));
-                binding.tvResult.setText(null);
+            String operator = "";
+            switch (button.getId()) {
+                case btnAddition:
+                    operator = "+";
+                    break;
+                case btnSubtraction:
+                    operator = "-";
+                    break;
+                case btnMultiplication:
+                    operator = "*";
+                    break;
+                case btnDivision:
+                    operator = "/";
+                    break;
+                case btnModulation:
+                    operator = "%";
+                    break;
             }
-            actionID = button.getId();
+
+            if(!binding.tvResult.getText().toString().isEmpty()){
+                String displayNumber = valueOf(binding.tvResult.getText());
+                inputList.add(decimalFormat.format(parseDouble(displayNumber)));
+                binding.tvResult.setText("");
+            }
+
+            if(inputList.size() != 0){
+                final int position = inputList.size() - 1;
+                String lastInputOfList = inputList.get(position);
+                boolean isNumber = lastInputOfList.matches(REGEX_DECIMAL_PATTERN);
+
+                if(isNumber) inputList.add(operator);
+                else inputList.set(position, operator);
+            }
         });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @SuppressLint("NonConstantResourceId")
     private void onActionClickListener(Button button) {
         button.setOnClickListener(v -> {
             String displayNumber = valueOf(binding.tvResult.getText());
+            if(button.getId() == btnDelete) getActionDelete();
             if(!displayNumber.isEmpty()){
                 switch (button.getId()) {
                     case btnAnswer:
                         getActionAnswer();
-                        break;
-                    case btnDelete:
-                        getActionDelete();
                         break;
                     case btnDot:
                         getActionDot();
@@ -143,46 +183,51 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @SuppressLint("NonConstantResourceId")
     private void getActionAnswer() {
-        if(actionID != 0){
-            String displayNumber = valueOf(binding.tvResult.getText());
-            inputSecond = parseDouble(displayNumber);
+        String displayNumber = valueOf(binding.tvResult.getText());
+        inputList.add(decimalFormat.format(parseDouble(displayNumber)));
 
-            switch (actionID) {
-                case btnAddition:
-                    inputFirst += inputSecond;
+        String expressions = join("", inputList);
+        String[] operators = expressions.split(REGEX_DECIMAL_PATTERN);
+        String[] operands = expressions.split(REGEX_OPERATOR_PATTERN);
+
+        double result = parseDouble(operands[0]);
+        for(int i=1; i<operands.length; i++){
+            switch (operators[i]) {
+                case "+":
+                    result += parseDouble(operands[i]);
                     break;
-                case btnSubtraction:
-                    inputFirst -= inputSecond;
+                case "-":
+                    result -= parseDouble(operands[i]);
                     break;
-                case btnMultiplication:
-                    inputFirst *= inputSecond;
+                case "*":
+                    result *= parseDouble(operands[i]);
                     break;
-                case btnDivision:
-                    inputFirst /= inputSecond;
+                case "/":
+                    result /= parseDouble(operands[i]);
                     break;
-                case btnModulation:
-                    inputFirst %= inputSecond;
+                default:
+                    result %= parseDouble(operands[i]);
                     break;
             }
-
-            actionID = 0;
-            binding.tvResult.setText(valueOf(inputFirst));
         }
+
+        binding.tvResult.setText(decimalFormat.format(result));
+        inputList.clear();
     }
 
     private void getActionDelete() {
-        binding.tvResult.setText(null);
-        inputFirst = 0.0;
-        inputSecond = 0.0;
+        binding.tvResult.setText("");
+        inputList.clear();
     }
 
     @SuppressLint("SetTextI18n")
     private void getActionDot() {
         String displayNumber = valueOf(binding.tvResult.getText());
         if(!displayNumber.contains(getString(str_dot))){
-            binding.tvResult.setText(displayNumber+getString(str_dot));
+            binding.tvResult.setText(displayNumber + getString(str_dot));
         }
     }
 }

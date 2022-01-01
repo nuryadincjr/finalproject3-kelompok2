@@ -2,7 +2,7 @@ package com.nuryadincjr.mycalculator.pojo;
 
 public class Constants {
     public static final String KEY_DISPLAY_NUMBER = "KEY DISPLAY NUMBER";
-    public static final String KEY_INPUT_FIRST = "KEY INPUT FIRST";
-    public static final String KEY_INPUT_SECOND = "KEY INPUT SECOND";
-    public static final String KEY_ACTION_ID = "KEY ACTION ID";
+    public static final String KEY_INPUT_LIST = "KEY INPUT LIST";
+    public static final String REGEX_DECIMAL_PATTERN = "([0-9]*)\\.([0-9]*)";
+    public static final String REGEX_OPERATOR_PATTERN = "[+\\-*/%]";
 }
