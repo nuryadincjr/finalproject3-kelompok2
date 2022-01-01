@@ -6,6 +6,9 @@ Introduction
 
 My Calculator
 
+- Build variant 'debug':\app\build\outputs\apk\debug
+- Build variant 'release':\app\release
+
 
 Pre-requisites
 --------------
