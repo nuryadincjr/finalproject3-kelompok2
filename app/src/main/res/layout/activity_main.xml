@@ -209,7 +209,7 @@
             tools:ignore="TextContrastCheck" />
 
         <Button
-            android:id="@id/btnModulation"
+            android:id="@id/btnPercentage"
             style="@style/Button.Operator"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
