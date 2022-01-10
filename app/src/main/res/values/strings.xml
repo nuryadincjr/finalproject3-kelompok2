@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Calculator</string>
+    <string name="app_name">Droidtor</string>
     <string name="str_default_number">0.0</string>
     <string name="str_delete">DEL</string>
     <string name="str_answer">ANSWER</string>
@@ -19,4 +19,19 @@
     <string name="str_zero">0</string>
     <string name="str_modulation">%</string>
     <string name="str_addition">+</string>
+
+    <string name="str_kontributor">Kontributor:</string>
+    <string name="str_mitra">Kampus Merdeka Hacktiv8</string>
+    <string name="str_team_member_2">Team Member 2</string>
+    <string name="str_kon1">Amri Marihot Jati</string>
+    <string name="str_univ1">STIE Indonesia Banking School</string>
+    <string name="str_portofolio1">\@amrimarihotjati</string>
+    <string name="str_portofoliourl1">https://github.com/amrimarihotjati</string>
+    <string name="str_kon2">Nuryadin Abutani</string>
+    <string name="str_univ2">Sekolah Tinggi Teknologi Bandng</string>
+    <string name="str_portofolio2">\@nuryadincjr</string>
+    <string name="str_portofoliourl2">https://github.com/nuryadincjr</string>
+    <string name="support_by_infix_calculator">Support by Infix Calculator</string>
+    <string name="about">About</string>
+
 </resources>

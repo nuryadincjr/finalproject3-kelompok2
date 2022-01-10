@@ -10,9 +10,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyCalculator">
         <activity
+            android:label="About"
+            android:name=".activity.AboutActivity"
+            android:exported="true" />
+        <activity
             android:name=".MainActivity"
-            android:exported="true"
-            android:configChanges="orientation|keyboardHidden|screenSize|layoutDirection">
+            android:configChanges="orientation|keyboardHidden|screenSize|layoutDirection"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

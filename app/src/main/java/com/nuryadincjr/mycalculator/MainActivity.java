@@ -24,8 +24,11 @@ import static java.text.DecimalFormatSymbols.getInstance;
 import static java.util.Objects.requireNonNull;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
@@ -33,6 +36,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.nuryadincjr.mycalculator.activity.AboutActivity;
 import com.nuryadincjr.mycalculator.databinding.ActivityMainBinding;
 
 import java.text.DecimalFormat;
@@ -81,6 +85,20 @@ public class MainActivity extends AppCompatActivity {
         onActionClickListener(binding.btnAnswer);
         onActionClickListener(binding.btnDelete);
         onActionClickListener(binding.btnDot);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_about, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId() == R.id.itemAbout){
+            startActivity(new Intent(this, AboutActivity.class));
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void onStateData(Bundle savedInstanceState) {
